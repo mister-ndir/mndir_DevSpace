@@ -6,7 +6,7 @@ DevSpace is a Django-powered web application designed to showcase events hosted 
 
 ## 🌐 Live Demo
 
-Coming soon...
+https://misterndir.pythonanywhere.com/
 
 ---
 
