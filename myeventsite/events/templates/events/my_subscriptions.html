@@ -1,0 +1,205 @@
+{% extends "events/base.html" %}
+{% load static %}
+
+{% block title %}My Subscriptions | 42 Abu Dhabi Events{% endblock %}
+
+{% block content %}
+<div class="subscriptions-container">
+    <h1 class="page-title">My Subscriptions</h1>
+    
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    {% if subscriptions %}
+        <div class="subscriptions-grid">
+            {% for subscription in subscriptions %}
+                <div class="subscription-card">
+                    <div class="event-image">
+                        <img src="{{ subscription.event.image }}" alt="{{ subscription.event.title }}">
+                    </div>
+                    <div class="event-info">
+                        <h3>{{ subscription.event.title }}</h3>
+                        <p class="event-date">{{ subscription.event.date|date:"F j, Y, g:i a" }}</p>
+                        <p class="event-location">{{ subscription.event.location }}</p>
+                        <p class="subscription-date">Subscribed on: {{ subscription.created_at|date:"F j, Y" }}</p>
+                        <div class="subscription-actions">
+                            <a href="{% url 'event_detail' subscription.event.id %}" class="action-button view-button">View Event</a>
+                            <form method="post" action="{% url 'event_detail' subscription.event.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="unsubscribe" value="true">
+                                <button type="submit" class="action-button unsubscribe-button">Unsubscribe</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-subscriptions">
+            <p>You haven't subscribed to any events yet.</p>
+            <a href="{% url 'events' %}" class="browse-button">Browse Events</a>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .subscriptions-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 2rem;
+    }
+    
+    .page-title {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        color: #fff;
+    }
+    
+    .subscriptions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+    }
+    
+    .subscription-card {
+        background-color: #111;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .subscription-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .event-image img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    
+    .event-info {
+        padding: 1.5rem;
+    }
+    
+    .event-info h3 {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        color: #fff;
+        font-size: 1.5rem;
+    }
+    
+    .event-date, .event-location {
+        color: #ff4655;
+        font-size: 0.9rem;
+        margin: 0.3rem 0;
+    }
+    
+    .subscription-date {
+        color: #ccc;
+        font-size: 0.9rem;
+        margin: 0.5rem 0 1rem;
+    }
+    
+    .subscription-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .action-button {
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        text-align: center;
+        flex: 1;
+    }
+    
+    .view-button {
+        background-color: #3498db;
+        color: white;
+    }
+    
+    .unsubscribe-button {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .action-button:hover {
+        opacity: 0.8;
+        transform: translateY(-2px);
+    }
+    
+    .no-subscriptions {
+        text-align: center;
+        padding: 3rem;
+        background-color: #111;
+        border-radius: 10px;
+    }
+    
+    .no-subscriptions p {
+        color: #ccc;
+        margin-bottom: 1.5rem;
+        font-size: 1.2rem;
+    }
+    
+    .browse-button {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        background-color: #ff4655;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    
+    .browse-button:hover {
+        background-color: #e63e4c;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(255, 70, 85, 0.4);
+    }
+    
+    .messages {
+        margin-bottom: 1.5rem;
+    }
+    
+    .message {
+        padding: 0.75rem;
+        border-radius: 5px;
+        margin-bottom: 0.5rem;
+    }
+    
+    .message.success {
+        background-color: rgba(40, 167, 69, 0.2);
+        border: 1px solid #28a745;
+        color: #28a745;
+    }
+    
+    .message.error {
+        background-color: rgba(220, 53, 69, 0.2);
+        border: 1px solid #dc3545;
+        color: #dc3545;
+    }
+    
+    @media (max-width: 768px) {
+        .subscriptions-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

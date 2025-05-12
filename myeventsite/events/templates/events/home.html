@@ -1,0 +1,167 @@
+{% extends "events/base.html" %}
+{% load static %}
+
+{% block title %}Home | 42 Abu Dhabi Events{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-content">
+        <h1>Welcome to 42 Abu Dhabi Events</h1>
+        <p class="hero-subtitle">Discover and join exciting tech events, hackathons, and workshops</p>
+        <a href="{% url 'events' %}" class="cta-button">Browse All Events</a>
+    </div>
+</div>
+
+<div class="featured-events">
+    <h2 class="section-title">Featured Events</h2>
+    
+    <div class="featured-events-grid">
+        {% if featured_events %}
+            {% for event in featured_events %}
+                <div class="featured-event-card">
+                    <a href="{% url 'event_detail' event.id %}" class="event-link">
+                        <div class="event-image">
+                            <img src="{{ event.image }}" alt="{{ event.title }}">
+                        </div>
+                        <div class="event-info">
+                            <h3>{{ event.title }}</h3>
+                            <p class="event-date">{{ event.date|date:"F j, Y" }}</p>
+                            <p class="event-location">{{ event.location }}</p>
+                            <p class="event-description">{{ event.description|truncatechars:100 }}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-events-message">
+                <p>No featured events at the moment. Check back soon!</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .hero-section {
+        background-color: #111;
+        padding: 5rem 2rem;
+        text-align: center;
+        border-radius: 10px;
+        margin-bottom: 3rem;
+    }
+    
+    .hero-content h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #fff;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+        color: #ccc;
+        margin-bottom: 2rem;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .cta-button {
+        display: inline-block;
+        padding: 1rem 2rem;
+        background-color: #ff4655;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    
+    .cta-button:hover {
+        background-color: #e63e4c;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(255, 70, 85, 0.4);
+    }
+    
+    .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        color: #fff;
+    }
+    
+    .featured-events {
+        padding: 2rem 0;
+    }
+    
+    .featured-events-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+        margin: 0 2rem;
+    }
+    
+    .featured-event-card {
+        background-color: #111;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .featured-event-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .event-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+    
+    .event-image img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    
+    .event-info {
+        padding: 1.5rem;
+    }
+    
+    .event-info h3 {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        color: #fff;
+        font-size: 1.5rem;
+    }
+    
+    .event-date, .event-location {
+        color: #ff4655;
+        font-size: 0.9rem;
+        margin: 0.3rem 0;
+    }
+    
+    .event-description {
+        color: #ccc;
+        margin-top: 1rem;
+        line-height: 1.5;
+    }
+    
+    .no-events-message {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 3rem;
+        background-color: #111;
+        border-radius: 10px;
+    }
+    
+    @media (max-width: 768px) {
+        .hero-content h1 {
+            font-size: 2.5rem;
+        }
+        
+        .featured-events-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

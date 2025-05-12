@@ -1,0 +1,359 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}42 Abu Dhabi{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background-color: #000; /* black background */
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+		nav {
+			background-color: #000;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 2rem 2rem 1rem 2rem; /* Add extra top padding */
+			position: relative; /* Needed for absolute children */
+		}
+
+        .nav-left {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: white;
+        }
+        .nav-left img {
+            width: 40px;     /* Adjust as needed */
+            height: auto;    /* Keeps aspect ratio */
+            vertical-align: middle;
+            margin-right: 8px; /* space between image and text */
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+			margin-right: 25rem;
+        }
+        
+        .admin-link {
+            color: #ffffff;
+            font-weight: bold;
+        }
+        .admin-link:hover {
+            color: #00ff90;
+        }
+
+		.nav-links a {
+			position: relative;
+			color: white;
+			text-decoration: none;
+			font-weight: 500;
+			font-size: 0.95rem;
+			padding-top: 0.5rem;
+			transition: color 0.3s ease;
+		}
+
+		.nav-links a::before {
+			content: '';
+			position: absolute;
+			top: -2.5rem; /* move it to navbar's top */
+			left: 50%;
+			transform: translateX(-50%);
+			width: 60%;
+			height: 4px;
+			background: #00ff90;
+			box-shadow: 0 0 10px #00ff90;
+			opacity: 0;
+			transition: opacity 0.3s ease;
+			border-radius: 4px;
+		}
+
+		.nav-links a:hover {
+			color: #00ff90;
+			text-shadow: 0 0 6px #00ff90;
+		}
+
+		.nav-links a:hover::before {
+			opacity: 1;
+		}
+		.nav-links a.active {
+			color: #00ff90;
+			text-shadow: 0 0 8px #00ff90;
+		}
+        .nav-right {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            background-color: #00ff90;
+            color: black;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+            border-radius: 20px;
+            box-shadow: 0 0 8px #00ff90;
+            cursor: pointer;
+        }
+
+        .btn-outline {
+            border: 1px solid white;
+            background: transparent;
+            color: white;
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+        }
+
+        .test{
+            color: #FFF;
+            text-align: center;
+            font-family: "Space Grotesk";
+            font-size: 86px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: normal;
+        }
+        .test0{
+            color: #FFF;
+            text-align: center;
+            margin-top: -60px;
+            font-family: "Space Grotesk";
+            font-size: 86px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: normal;
+        }
+        .test1{
+            color: #2BFC63;
+            text-shadow: 0 0 6px #00ff90;
+            font-family: "Space Grotesk";
+            font-size: 86px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
+.carousel-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 2rem;
+    padding: 2rem;
+    margin: 3rem auto;
+    max-width: 1500px;
+}
+
+.carousel-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.carousel-container::-webkit-scrollbar-thumb {
+    background-color: #00ff90;
+    border-radius: 4px;
+}
+
+.event-card {
+    flex: 0 0 auto;
+    width: 280px;
+    height: 400px;
+    background-color: #1F1F1F;
+    border-radius: 20px;
+    scroll-snap-align: start;
+    box-shadow: 0 0 15px rgba(0, 255, 144, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.event-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #00ff90;
+}
+
+.event-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.event-card-content {
+    padding: 1rem;
+    color: #fff;
+    font-family: "Space Grotesk", sans-serif;
+}
+
+.event-card-content h3 {
+    color: #00ff90;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.event-card-content p {
+    font-size: 0.95rem;
+    color: #ccc;
+}
+
+    /* Light theme styles */
+    body.light-theme {
+        background-color: #f5f5f5;
+        color: #333;
+    }
+    
+    body.light-theme nav {
+        background-color: #f5f5f5;
+    }
+    
+    body.light-theme .nav-links a {
+        color: #333;
+    }
+    
+    body.light-theme .nav-links a:hover {
+        color: #00aa60;
+    }
+    
+    body.light-theme .nav-links a.active {
+        color: #00aa60;
+    }
+    
+    body.light-theme .nav-left {
+        color: #333;
+    }
+    
+    body.light-theme .event-card {
+        background-color: #fff;
+        box-shadow: 0 0 15px rgba(0, 170, 96, 0.3);
+    }
+    
+    body.light-theme .event-card:hover {
+        box-shadow: 0 0 20px #00aa60;
+    }
+    
+    body.light-theme .event-card-content h3 {
+        color: #00aa60;
+    }
+    
+    body.light-theme .event-card-content p {
+        color: #555;
+    }
+    
+    /* Offline alert styles */
+    #offline-alert {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background-color: #ff4655;
+        color: white;
+        text-align: center;
+        padding: 0.5rem;
+        z-index: 1000;
+    }
+    
+    body.light-theme #offline-alert {
+        background-color: #d32f2f;
+    }
+    </style>
+</head>
+<body>
+
+<div id="offline-alert">You are currently offline. Some features may not be available.</div>
+
+<nav>
+    <div class="nav-left"> <span style="font-family: Space Grotesk; font-size: 20px;">42 ABU DHABI</span></div>
+    <div class="nav-links">
+        <a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}">HOME</a>
+        <a href="{% url 'events' %}" class="{% if 'events' in request.path and not 'my_subscriptions' in request.path %}active{% endif %}">EVENTS</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'my_subscriptions' %}" class="{% if 'my_subscriptions' in request.path %}active{% endif %}">MY SUBSCRIPTIONS</a>
+            {% if user.is_superuser %}
+            <a href="/admin-dashboard/" class="admin-link">ADMIN DASHBOARD</a>
+            {% endif %}
+            <a href="{% url 'logout' %}">LOGOUT</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="{% if request.path == '/login/' %}active{% endif %}">LOGIN</a>
+            <a href="{% url 'register' %}" class="{% if request.path == '/register/' %}active{% endif %}">REGISTER</a>
+        {% endif %}
+    </div>
+    <div class="nav-right">
+        <button class="btn">SUPPORT</button>
+        <button class="btn-outline">EN ▾</button>
+    </div>
+</nav>
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+
+<script>
+    const links = document.querySelectorAll('.nav-links a');
+
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            links.forEach(l => l.classList.remove('active')); // Remove active from all
+            link.classList.add('active'); // Add to clicked
+        });
+    });
+</script>
+
+<script>
+    // Theme switching functionality
+
+    // Offline detection
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    
+    function updateOnlineStatus() {
+        const offlineAlert = document.getElementById('offline-alert');
+        if (navigator.onLine) {
+            offlineAlert.style.display = 'none';
+        } else {
+            offlineAlert.style.display = 'block';
+        }
+    }
+    
+    // Check initial status
+    document.addEventListener('DOMContentLoaded', updateOnlineStatus);
+</script>
+
+<style>
+    .theme-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 100;
+    }
+    
+    .theme-switch-btn {
+        background-color: #ff4655;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 0 10px rgba(255, 70, 85, 0.5);
+        transition: all 0.3s ease;
+    }
+    
+    .theme-switch-btn:hover {
+        background-color: #e63e4c;
+        transform: translateY(-3px);
+    }
+    
+    body.light-theme .theme-switch-btn {
+        background-color: #00aa60;
+        box-shadow: 0 0 10px rgba(0, 170, 96, 0.5);
+    }
+    
+    body.light-theme .theme-switch-btn:hover {
+        background-color: #008c4e;
+    }
+</style>
+    {% load static %}
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

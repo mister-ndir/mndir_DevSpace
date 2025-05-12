@@ -1,0 +1,135 @@
+{% extends "events/base.html" %}
+{% load static %}
+{% block title %}{{ event.title }} | 42 Abu Dhabi{% endblock %}
+
+{% block content %}
+<div class="event-detail-container">
+    <div class="event-detail-header">
+        <h1>{{ event.title }}</h1>
+        <div class="event-meta">
+            <p><strong>Date:</strong> {{ event.date|date:"F j, Y, g:i a" }}</p>
+            <p><strong>Location:</strong> {{ event.location }}</p>
+        </div>
+    </div>
+    
+    <div class="event-detail-content">
+        <div class="event-image">
+            <img src="{{ event.image }}" alt="{{ event.title }}">
+        </div>
+        <div class="event-description">
+            <h2>About this event</h2>
+            <p>{{ event.description|linebreaks }}</p>
+        </div>
+    </div>
+    
+    <div class="event-actions">
+        {% if user.is_authenticated %}
+            <form method="post" class="subscription-form">
+                {% csrf_token %}
+                {% if subscribed %}
+                    <input type="hidden" name="unsubscribe" value="true">
+                    <button type="submit" class="btn btn-danger">Unsubscribe</button>
+                {% else %}
+                    <input type="hidden" name="subscribe" value="true">
+                    <button type="submit" class="btn btn-primary">Subscribe to Event</button>
+                {% endif %}
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary">Login to Subscribe</a>
+        {% endif %}
+        <a href="{% url 'events' %}" class="btn btn-secondary">Back to Events</a>
+    </div>
+    
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .event-detail-container {
+        max-width: 1000px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: #111;
+        border-radius: 10px;
+    }
+    
+    .event-detail-header {
+        margin-bottom: 2rem;
+    }
+    
+    .event-detail-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: #fff;
+    }
+    
+    .event-meta {
+        display: flex;
+        gap: 2rem;
+        color: #ccc;
+    }
+    
+    .event-detail-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .event-image img {
+        width: 100%;
+        border-radius: 8px;
+    }
+    
+    .event-description h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        color: #fff;
+    }
+    
+    .event-description p {
+        color: #ccc;
+        line-height: 1.6;
+    }
+    
+    .event-actions {
+        margin-top: 2rem;
+    }
+    
+    .btn {
+        display: inline-block;
+        padding: 0.8rem 1.5rem;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-secondary {
+        background-color: #333;
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        background-color: #444;
+    }
+    
+    @media (max-width: 768px) {
+        .event-detail-content {
+            grid-template-columns: 1fr;
+        }
+        
+        .event-meta {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+    }
+</style>
+{% endblock %}

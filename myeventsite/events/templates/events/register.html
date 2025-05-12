@@ -1,0 +1,182 @@
+{% extends "events/base.html" %}
+{% load static %}
+
+{% block title %}Register | 42 Abu Dhabi Events{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-form">
+        <h1>Create an Account</h1>
+        
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username">Username</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="form-error">{{ form.username.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_email">Email</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="form-error">{{ form.email.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_password1">Password</label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                    <div class="form-error">{{ form.password1.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_password2">Confirm Password</label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                    <div class="form-error">{{ form.password2.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-group checkbox-group">
+                {{ form.is_admin }}
+                <label for="id_is_admin">{{ form.is_admin.label }}</label>
+                {% if form.is_admin.errors %}
+                    <div class="form-error">{{ form.is_admin.errors }}</div>
+                {% endif %}
+            </div>
+            <button type="submit" class="auth-button">Register</button>
+        </form>
+        
+        <div class="auth-links">
+            <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .auth-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        padding: 2rem;
+    }
+    
+    .auth-form {
+        background-color: #111;
+        border-radius: 10px;
+        padding: 2rem;
+        width: 100%;
+        max-width: 500px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .auth-form h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #fff;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #ccc;
+    }
+    
+    .form-group input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #333;
+        border-radius: 5px;
+        background-color: #222;
+        color: #fff;
+    }
+    
+    .form-error {
+        color: #ff6b6b;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+    
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+        width: auto;
+        margin-right: 0.5rem;
+    }
+    
+    .auth-button {
+        width: 100%;
+        padding: 1rem;
+        background-color: #ff4655;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .auth-button:hover {
+        background-color: #e63e4c;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(255, 70, 85, 0.4);
+    }
+    
+    .auth-links {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: #ccc;
+    }
+    
+    .auth-links a {
+        color: #ff4655;
+        text-decoration: none;
+    }
+    
+    .auth-links a:hover {
+        text-decoration: underline;
+    }
+    
+    .messages {
+        margin-bottom: 1.5rem;
+    }
+    
+    .message {
+        padding: 0.75rem;
+        border-radius: 5px;
+        margin-bottom: 0.5rem;
+    }
+    
+    .message.success {
+        background-color: rgba(40, 167, 69, 0.2);
+        border: 1px solid #28a745;
+        color: #28a745;
+    }
+    
+    .message.error {
+        background-color: rgba(220, 53, 69, 0.2);
+        border: 1px solid #dc3545;
+        color: #dc3545;
+    }
+</style>
+{% endblock %}

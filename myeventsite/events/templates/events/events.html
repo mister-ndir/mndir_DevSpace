@@ -1,0 +1,236 @@
+{% extends "events/base.html" %}
+{% block title %}Events | 42 Abu Dhabi{% endblock %}
+
+{% block content %}
+<div class="events-header" style="margin-top: -30px; margin-left: 300px;">
+    <div class="header-content">
+        <h1 class="test">UNIQUE EVENTS</h1>
+        <h1 class="test0">HOST BY <span class="test1">42 ABU DHABI</span></h1>
+    </div>
+<!--     
+    <div class="search-container">
+        <form method="GET" action="{% url 'events' %}" class="search-form">
+            <input type="text" name="search" placeholder="Search events..." value="{{ search_query }}">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+        <a href="{% url 'export_events_csv' %}" class="export-button">Export CSV</a>
+    </div> -->
+</div>
+
+<div class="theme-toggle">
+    <button id="theme-switch" class="theme-switch-btn">Switch Theme</button>
+</div>
+
+<div class="container" style="margin-top: 20px;">
+    {% if events %}
+        <div class="events-grid">
+            {% for event in events %}
+                <div class="event-card">
+                    <a href="{% url 'event_detail' event.id %}" class="event-link">
+                        <img src="{{ event.image }}" alt="{{ event.title }}">
+                        <div class="event-card-content">
+                            <h3>{{ event.title }}</h3>
+                            <p class="event-date">{{ event.date|date:"F j, Y" }}</p>
+                            <p class="event-location">{{ event.location }}</p>
+                            <p>{{ event.description|truncatechars:100 }}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-events">
+            {% if search_query %}
+                <p>No events found matching "{{ search_query }}". Try a different search term.</p>
+            {% else %}
+                <p>No events available at the moment. Check back soon!</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+<div class="offline-notification" id="offline-alert" style="display: none;">
+    <p>You are currently offline. Some features may be limited.</p>
+</div>
+
+<style>
+    .events-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+    
+    .search-container {
+        margin-right: 2rem;
+    }
+    
+    .search-form {
+        display: flex;
+    }
+    
+    .search-form input {
+        padding: 0.8rem;
+        border: none;
+        background-color: #222;
+        color: white;
+        border-radius: 5px 0 0 5px;
+        width: 250px;
+    }
+    
+    .search-button {
+        padding: 0.8rem 1.2rem;
+        background-color: #ff4655;
+        color: white;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+    }
+    
+    .export-button {
+        display: block;
+        margin-top: 0.5rem;
+        padding: 0.6rem 1rem;
+        background-color: #00ff90;
+        color: black;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        box-shadow: 0 0 8px rgba(0, 255, 144, 0.5);
+        transition: all 0.3s ease;
+    }
+    
+    .export-button:hover {
+        background-color: #00cc72;
+        box-shadow: 0 0 12px rgba(0, 255, 144, 0.7);
+    }
+    
+    .events-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+    
+    .event-card {
+        background-color: #111;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .event-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .event-link {
+        text-decoration: none;
+        color: inherit;
+    }
+    
+    .event-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+    
+    .event-card-content {
+        padding: 1.5rem;
+    }
+    
+    .event-card-content h3 {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        color: #fff;
+    }
+    
+    .event-date, .event-location {
+        color: #ff4655;
+        font-size: 0.9rem;
+        margin: 0.3rem 0;
+    }
+    
+    .no-events {
+        text-align: center;
+        padding: 3rem;
+        background-color: #111;
+        border-radius: 10px;
+    }
+    
+    .theme-toggle {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .theme-switch-btn {
+        padding: 0.5rem 1rem;
+        background-color: #333;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    .offline-notification {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background-color: #ff4655;
+        color: white;
+        padding: 1rem;
+        border-radius: 5px;
+        z-index: 1000;
+    }
+    
+    /* Light theme styles */
+    body.light-theme {
+        background-color: #f5f5f5;
+        color: #333;
+    }
+    
+    body.light-theme .event-card {
+        background-color: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    body.light-theme .event-card-content h3 {
+        color: #333;
+    }
+    
+    body.light-theme .no-events {
+        background-color: white;
+    }
+    
+    body.light-theme .search-form input {
+        background-color: #eee;
+        color: #333;
+    }
+    
+    @media (max-width: 768px) {
+        .events-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .search-container {
+            margin-top: 1rem;
+            margin-right: 0;
+            width: 100%;
+        }
+        
+        .search-form {
+            width: 100%;
+        }
+        
+        .search-form input {
+            width: 70%;
+        }
+    }
+</style>
+
+
+{% endblock %}
